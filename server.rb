@@ -128,6 +128,10 @@ def cast_for_movie(results)
   cast
 end
 
+def order_by(movies, attribute)
+  movies.sort_by { |movie| -movie[attribute.to_sym] }
+end
+
 #####################################
 #             ROUTES
 #####################################
@@ -159,7 +163,11 @@ end
 get '/movies' do
   results = get_all_movies
 
-  @movies = sort_by_title(results)
+  if params[:order]
+    @movies = order_by(results, params[:order])
+  else
+    @movies = sort_by_title(results)
+  end
 
   erb :'movies/index'
 end
