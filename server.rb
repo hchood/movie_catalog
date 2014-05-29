@@ -31,16 +31,17 @@ def get_all_actors
   results.to_a
 end
 
-def get_all_movies
+def get_all_movies(offset = 0)
   query = %Q{
     SELECT movies.title, movies.year, movies.id, movies.rating, genres.name AS genre, studios.name AS studio
     FROM movies
     JOIN genres ON genres.id = movies.genre_id
     JOIN studios ON studios.id = movies.studio_id
+    LIMIT 20 OFFSET $1
   }
 
   results = db_connection do |conn|
-    conn.exec(query)
+    conn.exec_params(query, [offset])
   end
 
   movies = []
@@ -157,7 +158,13 @@ get '/actors/:id' do
 end
 
 get '/movies' do
-  results = get_all_movies
+  # results = get_all_movies
+  if params[:page]
+    offset = (params[:page].to_i - 1) * 20 - 1
+    results = get_all_movies(offset)
+  else
+    results = get_all_movies
+  end
 
   if params[:order]
     @movies = order_by(results, params[:order])
