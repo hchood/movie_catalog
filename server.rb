@@ -31,17 +31,29 @@ def get_all_actors
   results.to_a
 end
 
-def get_all_movies(offset = 0)
+def calculate_offset(page)
+  if page && page != '1'
+    (page.to_i - 1) * 20 - 1
+  else
+    0
+  end
+end
+
+def get_all_movies(params)
+  order = params[:order] || 'title'
+  offset = calculate_offset(params[:page])
+
   query = %Q{
     SELECT movies.title, movies.year, movies.id, movies.rating, genres.name AS genre, studios.name AS studio
     FROM movies
     JOIN genres ON genres.id = movies.genre_id
     JOIN studios ON studios.id = movies.studio_id
-    LIMIT 20 OFFSET $1
+    ORDER BY $1
+    LIMIT 20 OFFSET $2
   }
 
   results = db_connection do |conn|
-    conn.exec_params(query, [offset])
+    conn.exec_params(query, [order, offset])
   end
 
   movies = []
@@ -125,10 +137,6 @@ def cast_for_movie(results)
   cast
 end
 
-def order_by(movies, attribute)
-  movies.sort_by { |movie| movie[attribute.to_sym] }
-end
-
 #####################################
 #             ROUTES
 #####################################
@@ -158,19 +166,7 @@ get '/actors/:id' do
 end
 
 get '/movies' do
-  # results = get_all_movies
-  if params[:page]
-    offset = (params[:page].to_i - 1) * 20 - 1
-    results = get_all_movies(offset)
-  else
-    results = get_all_movies
-  end
-
-  if params[:order]
-    @movies = order_by(results, params[:order])
-  else
-    @movies = order_by(results, :title)
-  end
+  @movies = get_all_movies(params)
 
   erb :'movies/index'
 end
