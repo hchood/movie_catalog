@@ -129,7 +129,7 @@ def cast_for_movie(results)
 end
 
 def order_by(movies, attribute)
-  movies.sort_by { |movie| -movie[attribute.to_sym] }
+  movies.sort_by { |movie| movie[attribute.to_sym] }
 end
 
 #####################################
