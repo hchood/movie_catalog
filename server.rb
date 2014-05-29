@@ -167,6 +167,7 @@ end
 
 get '/movies' do
   @movies = get_all_movies(params)
+  @page = params[:page] ? params[:page].to_i : 1
 
   erb :'movies/index'
 end

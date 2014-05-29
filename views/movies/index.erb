@@ -25,3 +25,11 @@
 
   </tbody>
 </table>
+
+<ul>
+  <% if @page != 1 %>
+    <li><a href="/movies?page=<%= @page - 1 %>">Back</a></li>
+  <% end %>
+
+  <li><a href="/movies?page=<%= @page + 1 %>">Next</a></li>
+</ul>
