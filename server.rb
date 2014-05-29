@@ -21,10 +21,6 @@ def sort_by_name(actors)
   actors.sort_by { |actor| actor['name'] }
 end
 
-def sort_by_title(movies)
-  movies.sort_by { |movie| movie['title'] }
-end
-
 def get_all_actors
   query = 'SELECT * FROM actors'
 
@@ -166,7 +162,7 @@ get '/movies' do
   if params[:order]
     @movies = order_by(results, params[:order])
   else
-    @movies = sort_by_title(results)
+    @movies = order_by(results, :title)
   end
 
   erb :'movies/index'
