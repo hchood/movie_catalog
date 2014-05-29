@@ -48,12 +48,12 @@ def get_all_movies(params)
     FROM movies
     JOIN genres ON genres.id = movies.genre_id
     JOIN studios ON studios.id = movies.studio_id
-    ORDER BY $1
-    LIMIT 20 OFFSET $2
+    ORDER BY #{order}
+    LIMIT 20 OFFSET #{offset}
   }
 
   results = db_connection do |conn|
-    conn.exec_params(query, [order, offset])
+    conn.exec(query)
   end
 
   movies = []
