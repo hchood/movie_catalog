@@ -1,5 +1,13 @@
 <h3>Movies</h3>
 
+<ul class="page-links">
+  <% if @page != 1 %>
+    <li><a href="/movies?page=<%= @page - 1 %>">Previous</a></li>
+  <% end %>
+
+  <li><a href="/movies?page=<%= @page + 1 %>">Next</a></li>
+</ul>
+
 <table>
   <thead>
     <tr>
@@ -25,11 +33,3 @@
 
   </tbody>
 </table>
-
-<ul class="page-links">
-  <% if @page != 1 %>
-    <li><a href="/movies?page=<%= @page - 1 %>">Previous</a></li>
-  <% end %>
-
-  <li><a href="/movies?page=<%= @page + 1 %>">Next</a></li>
-</ul>
