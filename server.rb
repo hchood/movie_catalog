@@ -47,6 +47,24 @@ def create_search_clause(query)
   end
 end
 
+def create_movies_array(results)
+  movies = []
+
+  results.each do |movie|
+    movie = {
+      id: movie['id'].to_i,
+      title: movie['title'],
+      year: movie['year'].to_i,
+      rating: movie['rating'].to_i,
+      genre: movie['genre'],
+      studio: movie['studio']
+    }
+    movies << movie
+  end
+
+  movies
+end
+
 def get_all_movies(params)
   order = params[:order] || 'title'
   offset = calculate_offset(params[:page])
@@ -66,21 +84,7 @@ def get_all_movies(params)
     conn.exec(query)
   end
 
-  movies = []
-
-  results.each do |movie|
-    movie = {
-      id: movie['id'].to_i,
-      title: movie['title'],
-      year: movie['year'].to_i,
-      rating: movie['rating'].to_i,
-      genre: movie['genre'],
-      studio: movie['studio']
-    }
-    movies << movie
-  end
-
-  movies
+  create_movies_array(results)
 end
 
 def get_actor_info(actor_id)
