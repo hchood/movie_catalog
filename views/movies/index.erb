@@ -1,18 +1,30 @@
 <h3>Movies</h3>
 
 <ul class="page-links">
-  <% if !params[:order] %>
+  <% if !params[:order]  && !params[:query] %>
     <% if @page != 1 %>
       <li><a href="/movies?page=<%= @page - 1 %>">Previous</a></li>
     <% end %>
 
     <li><a href="/movies?page=<%= @page + 1 %>">Next</a></li>
-  <% else %>
+  <% elsif params[:order]  && !params[:query] %>
     <% if @page != 1 %>
       <li><a href="/movies?order=<%= params[:order] %>&page=<%= @page - 1 %>">Previous</a></li>
     <% end %>
 
     <li><a href="/movies?order=<%= params[:order] %>&page=<%= @page + 1 %>">Next</a></li>
+  <% elsif !params[:order]  && params[:query] %>
+    <% if @page != 1 %>
+      <li><a href="/movies?query=<%= params[:query] %>&page=<%= @page - 1 %>">Previous</a></li>
+    <% end %>
+
+    <li><a href="/movies?query=<%= params[:query] %>&page=<%= @page + 1 %>">Next</a></li>
+  <% else %>
+    <% if @page != 1 %>
+      <li><a href="/movies?order=<%= params[:order] %>&query=<%= params[:query] %>&page=<%= @page - 1 %>">Previous</a></li>
+    <% end %>
+
+    <li><a href="/movies?order=<%= params[:order] %>&query=<%= params[:query] %>&page=<%= @page + 1 %>">Next</a></li>
   <% end %>
 
 </ul>
