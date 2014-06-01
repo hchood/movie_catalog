@@ -17,12 +17,12 @@ def db_connection
   end
 end
 
-def sort_by_name(actors)
-  actors.sort_by { |actor| actor['name'] }
-end
 
 def get_all_actors
-  query = 'SELECT * FROM actors'
+  query = %Q{
+    SELECT * FROM actors
+    ORDER BY name
+  }
 
   results = db_connection do |conn|
     conn.exec(query)
@@ -160,9 +160,7 @@ end
 #####################################
 
 get '/actors' do
-  results = get_all_actors
-
-  @actors = sort_by_name(results)
+  @actors = get_all_actors
 
   erb :'actors/index'
 end
