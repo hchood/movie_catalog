@@ -1,5 +1,10 @@
 <h3>Movies</h3>
 
+<form action="/movies" method="get">
+  <input type="search" name="query">
+  <input type="submit" value="Search">
+</form>
+
 <ul class="page-links">
   <% if !params[:order]  && !params[:query] %>
     <% if @page != 1 %>
