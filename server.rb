@@ -39,15 +39,18 @@ def calculate_offset(page)
   end
 end
 
-def get_all_movies(params)
-  order = params[:order] || 'title'
-  offset = calculate_offset(params[:page])
-
-  if params[:query]
+def create_search_clause(query)
+  if query
     search_clause = "WHERE movies.title ILIKE '%#{params[:query]}%' OR movies.synopsis ILIKE '%#{params[:query]}%'"
   else
     search_clause = ""
   end
+end
+
+def get_all_movies(params)
+  order = params[:order] || 'title'
+  offset = calculate_offset(params[:page])
+  search_clause = create_search_clause(params[:query])
 
   query = %Q{
     SELECT movies.title, movies.year, movies.id, movies.rating, genres.name AS genre, studios.name AS studio
