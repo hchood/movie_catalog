@@ -65,7 +65,7 @@ def create_movies_array(results)
   movies
 end
 
-def get_all_movies(params)
+def create_movies_query(params)
   order = params[:order] || 'title'
   offset = calculate_offset(params[:page])
   search_clause = create_search_clause(params[:query])
@@ -79,6 +79,10 @@ def get_all_movies(params)
     ORDER BY #{order}
     LIMIT 20 OFFSET #{offset}
   }
+end
+
+def get_all_movies(params)
+  query = create_movies_query(params)
 
   results = db_connection do |conn|
     conn.exec(query)
