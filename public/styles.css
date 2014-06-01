@@ -1,0 +1,13 @@
+.page-links {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page-links li {
+  display: inline;
+}
+
+.page-links li a {
+  text-decoration: none;
+}
