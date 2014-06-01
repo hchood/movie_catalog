@@ -70,7 +70,7 @@ def create_movies_query(params)
   offset = calculate_offset(params[:page])
   search_clause = create_search_clause(params[:query])
 
-  query = %Q{
+  %Q{
     SELECT movies.title, movies.year, movies.id, movies.rating, genres.name AS genre, studios.name AS studio
     FROM movies
     JOIN genres ON genres.id = movies.genre_id
